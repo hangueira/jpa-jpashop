@@ -2,11 +2,12 @@ package jpabook.jpashop.service;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +19,7 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
     @Autowired
-    MemberRepository repository;
+    MemberRepository memberRepository;
 
     @Test
     void 회원가입() throws Exception {
@@ -31,7 +32,7 @@ class MemberServiceTest {
 
         //then
         assertThat(memberId).isEqualTo(member.getId());
-        assertEquals(member, memberService.findOne(memberId));
+        assertEquals(member, memberService.findOne(memberId).orElseThrow(() -> new NoSuchElementException()));
     }
 
     @Test
